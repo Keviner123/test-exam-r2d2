@@ -53,20 +53,15 @@ async def main():
 
                 subprocess.run(['espeak', '-v', 'en', "No token has been set, please add me in the dashboard"])
                 await questionansweringservice.authenticate()
+                subprocess.run(['espeak', '-v', 'en', "Thank you, devices token recieved"])
 
                 # Set the color to green to show that a token is st
                 pixels.fill((0, 50, 0))
-
-                subprocess.run(['espeak', '-v', 'en', "Thank you, devices token recieved"])
-
                 time.sleep(5)
             else:
 
                 soundfileplayer.play_mp3_async(config["activation-sound"])
-
-                #Set the color to blue, to show that the device is listening
-                pixels.fill((0, 0, 50))
-
+                
                 time.sleep(1)
                 voicelistener.start_recording()
 
