@@ -25,10 +25,9 @@ class QuestionAnsweringService:
         response = await self.websocket.recv()
 
         repsonse_json = json.loads(response)
-
-        print(str(repsonse_json["Message"]))
+        recieved_token = repsonse_json["Message"]
         
-        self.db.execute_query('INSERT INTO token (value) VALUES (?)', (str(repsonse_json["Message"]),))
+        self.db.execute_query('INSERT INTO token (value) VALUES (?)', (recieved_token,))
 
     def load_local_token(self):
         token_record = self.db.get_record('SELECT * FROM token WHERE id = 1')
