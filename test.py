@@ -1,12 +1,9 @@
-import asyncio
-import websockets
+from DAL.sqlite_dal import SQLiteDAL
 
-class WebSocketClient:
+db = SQLiteDAL('database.db')
 
-    
-async def main():
-    client = WebSocketClient("wss://api.prøve.svendeprøven.dk/ws/r2d2device")
-    response = await client.send_and_receive('{"Type": "mac","Message": "00:B0:D0:63:C2:11"}')
-    print(response)
+db.execute_query('INSERT INTO token (value) VALUES (?)', ('a Doe',))
 
-asyncio.run(main())
+token = db.get_record('SELECT * FROM token WHERE id = 1')
+
+pass

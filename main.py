@@ -14,13 +14,18 @@ from BLL.sound_file_player import SoundFilePlayer
 from BLL.text_to_speach_converter import TextToSpeechConverter
 from BLL.webserver import Webserver
 
+from DAL.sqlite_dal import SQLiteDAL
+
 from View.hotword_listener import HotwordDetector
 from View.voice_listener import VoiceListener
 
 
 async def main():
+    db = SQLiteDAL('database.db')
+
     with open("config.yaml", "r", encoding="utf-8") as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
+
 
     # pixels = neopixel.NeoPixel(board.D18, 60)
 
@@ -28,7 +33,7 @@ async def main():
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
-    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma())
+    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma(), db)
     internetchecker = InternetChecker()
 
 
@@ -36,22 +41,14 @@ async def main():
         if(internetchecker.check()):
 
 
-            if(questionansweringservice.token == None):
+            if(questionansweringservice.token == ""):
                 subprocess.run(['espeak', '-v', 'en', "No token has been set, please add me in the dashboard"])
                 await questionansweringservice.authenticate()
-                subprocess.run(['espeak', '-v', 'en', "Thank you"])
+                subprocess.run(['espeak', '-v', 'en', "Thank you, devices token recieved"])
             else:
 
-
-
-
-
-
                 soundfileplayer.play_mp3_async(config["activation-sound"])
-                
                 time.sleep(1)
-
-
                 voicelistener.start_recording()
 
                 try:
