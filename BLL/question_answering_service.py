@@ -28,6 +28,8 @@ class QuestionAnsweringService:
         
         response_token = repsonse_json["Message"]
         self.token_file.write(response_token)
+        self.token = response_token
+
         
 
     def load_local_token(self):
