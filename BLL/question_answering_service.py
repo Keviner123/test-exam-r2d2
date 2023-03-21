@@ -10,8 +10,8 @@ class QuestionAnsweringService:
         self.websocket = None
         self.url = url
         self.macaddress = macaddress
-        self.token = self.load_local_token()
         self.db = db
+        self.token = self.load_local_token()
 
 
 
