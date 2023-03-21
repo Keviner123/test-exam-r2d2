@@ -33,7 +33,7 @@ async def main():
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
-    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma(), FileDAL('data.json'))
+    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma(), FileDAL('token'))
     internetchecker = InternetChecker()
 
 
