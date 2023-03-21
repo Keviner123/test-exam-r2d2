@@ -21,6 +21,10 @@ from View.voice_listener import VoiceListener
 
 
 async def main():
+
+    subprocess.run(['espeak', '-v', 'en', "R too d too online"])
+
+
     with open("config.yaml", "r", encoding="utf-8") as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 
@@ -38,10 +42,6 @@ async def main():
 
 
     while hotwordetector.wait_for_hotwords():
-
-        #Set the default color (white)
-        pixels.fill((10, 10, 10))
-
         if(internetchecker.check()):
             if(questionansweringservice.token == ""):
                 
@@ -56,6 +56,9 @@ async def main():
                 pixels.fill((0, 50, 0))
                 time.sleep(5)
             else:
+
+                pixels.fill((0, 0, 150))
+
 
                 soundfileplayer.play_mp3_async(config["activation-sound"])
                 
@@ -72,7 +75,12 @@ async def main():
                     soundfileplayer.play_mp3("output.mp3")
 
                 except IndexError:
+                    # Set the color to warn the user, that no token is set
+                    pixels.fill((50, 0, 0))
                     subprocess.run(['espeak', '-v', 'en', "No voice detected"])
+
+                pixels.fill((0, 0, 0))
+
         else:
             print("Creating AP")
             subprocess.run(['espeak', '-v', 'en', "I was unable to connect to the internet, starting wifi hotspot."])
