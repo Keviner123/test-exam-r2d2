@@ -3,15 +3,15 @@ import requests
 import asyncio
 import websockets
 
-from DAL.sqlite_dal import SQLiteDAL
+from DAL.file_dal import FileDAL
 
 class QuestionAnsweringService:
-    def __init__(self, url, macaddress, db: SQLiteDAL):
+    def __init__(self, url, macaddress, token_file: FileDAL):
         self.websocket = None
         self.url = url
         self.macaddress = macaddress
-        self.db = db
-        # self.token = self.load_local_token()
+        self.token_file = token_file
+        self.token = token_file.read()
 
 
 
@@ -27,9 +27,8 @@ class QuestionAnsweringService:
         repsonse_json = json.loads(response)
         
         response_token = repsonse_json["Message"]
-        print(response_token)
+        self.token_file.write(response_token)
         
-        # self.db.execute_query('INSERT INTO token (value) VALUES (?)', (self.token,))
 
     def load_local_token(self):
         token_record = self.db.get_record('SELECT * FROM token WHERE id = 1')

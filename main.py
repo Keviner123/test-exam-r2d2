@@ -13,30 +13,27 @@ from BLL.question_answering_service import QuestionAnsweringService
 from BLL.sound_file_player import SoundFilePlayer
 from BLL.text_to_speach_converter import TextToSpeechConverter
 from BLL.webserver import Webserver
+from DAL.file_dal import FileDAL
 
-from DAL.sqlite_dal import SQLiteDAL
 
 from View.hotword_listener import HotwordDetector
 from View.voice_listener import VoiceListener
 
 
 async def main():
-    db = SQLiteDAL('database.db')
-
     with open("config.yaml", "r", encoding="utf-8") as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
     pixels = neopixel.NeoPixel(board.D18, 60)
     
-
     
 
     hotwordetector = HotwordDetector(config["picovoice-apikey"])
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
-    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma(), db)
+    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma(), FileDAL('data.json'))
     internetchecker = InternetChecker()
 
 
