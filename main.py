@@ -2,6 +2,7 @@ import asyncio
 import time
 import yaml
 import subprocess
+from getmac import get_mac_address as gma
 
 import board
 import neopixel
@@ -27,11 +28,8 @@ async def main():
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
-    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", "00:B0:D0:63:C2:11")
+    questionansweringservice = QuestionAnsweringService("wss://api.prøve.svendeprøven.dk/ws/r2d2device", gma())
     internetchecker = InternetChecker()
-
-
-  
 
 
     while hotwordetector.wait_for_hotwords():
@@ -40,7 +38,7 @@ async def main():
 
             if(questionansweringservice.token == None):
                 subprocess.run(['espeak', '-v', 'en', "No token has been set, please add me in the dashboard"])
-                response = await questionansweringservice.authenticate()
+                await questionansweringservice.authenticate()
                 subprocess.run(['espeak', '-v', 'en', "Thank you"])
             else:
 

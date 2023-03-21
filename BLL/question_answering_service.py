@@ -2,7 +2,6 @@ import json
 import requests
 import asyncio
 import websockets
-from getmac import get_mac_address as gma
 
 class QuestionAnsweringService:
     def __init__(self, url, macaddress):
