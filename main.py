@@ -27,7 +27,10 @@ async def main():
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
-    # pixels = neopixel.NeoPixel(board.D18, 60)
+    pixels = neopixel.NeoPixel(board.D18, 60)
+    
+
+    
 
     hotwordetector = HotwordDetector(config["picovoice-apikey"])
     soundfileplayer = SoundFilePlayer()
@@ -38,16 +41,32 @@ async def main():
 
 
     while hotwordetector.wait_for_hotwords():
+
+        #Set the default color (white)
+        pixels.fill((10, 10, 10))
+
         if(internetchecker.check()):
-
-
             if(questionansweringservice.token == ""):
+                
+                # Set the color to warn the user, that no token is set
+                pixels.fill((50, 0, 0))
+
                 subprocess.run(['espeak', '-v', 'en', "No token has been set, please add me in the dashboard"])
                 await questionansweringservice.authenticate()
+
+                # Set the color to green to show that a token is st
+                pixels.fill((0, 50, 0))
+
                 subprocess.run(['espeak', '-v', 'en', "Thank you, devices token recieved"])
+
+                time.sleep(5)
             else:
 
                 soundfileplayer.play_mp3_async(config["activation-sound"])
+
+                #Set the color to blue, to show that the device is listening
+                pixels.fill((0, 0, 50))
+
                 time.sleep(1)
                 voicelistener.start_recording()
 
