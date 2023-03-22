@@ -30,15 +30,12 @@ class QuestionAnsweringService:
         self.token_file.write(response_token)
         self.token = response_token
 
-        
-
     def load_local_token(self):
         token_record = self.db.get_record('SELECT * FROM token WHERE id = 1')
 
         print(token_record[0])
 
         return token_record[0]
-
 
     def get_answer(self, question: str) -> str:
 

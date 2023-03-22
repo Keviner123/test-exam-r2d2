@@ -7,7 +7,7 @@ import wave
 import pvporcupine
 import pyaudio
 
-class HotwordDetector:
+class HotwordListener:
     def __init__(self, access_key: str) -> None:
         self.access_key = access_key
 

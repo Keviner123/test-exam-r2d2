@@ -15,8 +15,7 @@ from BLL.text_to_speach_converter import TextToSpeechConverter
 from BLL.webserver import Webserver
 from DAL.file_dal import FileDAL
 
-
-from View.hotword_listener import HotwordDetector
+from View.hotword_listener import HotwordListener
 from View.voice_listener import VoiceListener
 
 
@@ -24,16 +23,13 @@ async def main():
 
     subprocess.run(['espeak', '-v', 'en', "R too d too online"])
 
-
     with open("config.yaml", "r", encoding="utf-8") as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
     pixels = neopixel.NeoPixel(board.D18, 60)
-    
-    
 
-    hotwordetector = HotwordDetector(config["picovoice-apikey"])
+    hotwordetector = HotwordListener(config["picovoice-apikey"])
     soundfileplayer = SoundFilePlayer()
     voicelistener = VoiceListener()
     texttospeechconverter = TextToSpeechConverter()
